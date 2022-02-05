@@ -6,7 +6,7 @@ function App() {
 	const [today, setToDay] = useState(moment().format("D"));
 	const [currentMonth, setCurrentMonth] = useState(moment().format("M"));
 	const [currentYear, setCurrentYear] = useState(moment().format("YYYY"));
-	const [minYear, setMinYear] = useState(
+	const [minYear] = useState(
 		parseInt(moment().format("YYYY")) - 80
 	);
 	const [currentMonthDays, setCurrentMonthDays] = useState(
@@ -42,10 +42,6 @@ function App() {
 		setCurrentYear(e.target.value);
 	};
 
-	const getDate = () => {
-		console.log(today, currentMonth, currentYear);
-	};
-	console.log(today + "-" + currentMonth + "-" + currentYear);
 	return (
 		<div className="App d-flex">
 			<header className="App-header">
