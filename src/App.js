@@ -97,7 +97,7 @@ function App() {
 				<br />
 				{moment(
 					new Date(currentMonth + "-" + today + "-" + currentYear)
-				).format("DD MMM YYYY")}
+				).format("MMM DD YYYY")}
 				<br />
 				<br />
 				{JSON.stringify(
