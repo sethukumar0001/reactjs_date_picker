@@ -31,6 +31,7 @@ function App() {
 
 	const [daysOptions, setDaysOptions] = useState([]);
 	const [yearOptions, setYearOptions] = useState([]);
+	const [expiryYearOption, setExpiryYearOption] = useState([]);
 
 	/* -------------------------------------------------------------------------- */
 	/*                               Use effect section                           */
@@ -39,6 +40,10 @@ function App() {
 	useEffect(() => {
 		findDays(moment(moment().format("MM"), "MM").daysInMonth());
 		findYears(parseInt(moment().format("YYYY")) - 80, moment().format("YYYY"));
+		findExpiryYear(
+			moment().format("YYYY"),
+			parseInt(moment().format("YYYY")) + 20
+		);
 	}, []);
 
 	/* -------------------------------------------------------------------------- */
@@ -104,6 +109,17 @@ function App() {
 		setYearOptions(years);
 	};
 
+	const findExpiryYear = (minYear, maxYear) => {
+		let years = [];
+		for (let i = minYear; i < parseInt(maxYear) + 1; i++) {
+			years.push({
+				value: i,
+				label: i,
+			});
+		}
+		setExpiryYearOption(years);
+	};
+
 	return (
 		<div className="App">
 			<header className="App-header">
@@ -151,6 +167,7 @@ function App() {
 					</div>
 					&nbsp;&nbsp;&nbsp;&nbsp;
 				</div>
+				<h2 className="color">Date of Birth</h2>
 				<div className="d-flex justify-content-between">
 					<div>
 						<label>Month - {currentMonth}</label>
@@ -206,6 +223,64 @@ function App() {
 						</select>
 					</div>
 				</div>
+
+				<h2 className="color mt-5">Passport Expiry Date</h2>
+				<div className="d-flex justify-content-between">
+					<div>
+						<label>Month - {currentMonth}</label>
+						<select
+							onChange={(e) => handleChangeMonth(e)}
+							className="form-select"
+						>
+							{months.map((item) => {
+								return (
+									<option
+										value={item.value}
+										selected={item.value === currentMonth}
+									>
+										{item.label}
+									</option>
+								);
+							})}
+						</select>{" "}
+					</div>
+					&nbsp;&nbsp;
+					<div>
+						<label>Days - {currentMonthDays}</label>
+						<select
+							onChange={(e) => handleChangeDay(e)}
+							className="form-select"
+						>
+							{daysOptions.map((item, index) => {
+								return (
+									<option value={item.value} selected={item.value === today}>
+										{item.label}
+									</option>
+								);
+							})}
+						</select>{" "}
+					</div>
+					&nbsp;&nbsp;
+					<div>
+						<label>Years</label>
+						<select
+							onChange={(e) => handleChangeYear(e)}
+							className="form-select"
+						>
+							{expiryYearOption.map((item, index) => {
+								return (
+									<option
+										value={item.value}
+										selected={item.value === parseInt(currentYear)}
+									>
+										{item.label}
+									</option>
+								);
+							})}{" "}
+						</select>
+					</div>
+				</div>
+
 				<div className="mt-5">
 					<p className="mt-3">MM-DD-YYYY</p>
 
