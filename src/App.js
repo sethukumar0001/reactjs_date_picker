@@ -116,12 +116,11 @@ function App() {
 							className="form-select"
 						>
 							{daysOptions.map((item, index) => {
-								if (index !== 0)
-									return (
-										<option value={item.value} selected={item.value === today}>
-											{item.label}
-										</option>
-									);
+								return (
+									<option value={item.value} selected={item.value === today}>
+										{item.label}
+									</option>
+								);
 							})}
 						</select>{" "}
 					</div>
