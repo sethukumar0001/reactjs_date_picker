@@ -1,30 +1,48 @@
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import moment from "moment";
-
+import "moment-timezone";
 function App() {
-	const [today, setToDay] = useState(moment().format("D"));
+	/* -------------------------------------------------------------------------- */
+	/*                               Use State section                            */
+	/* -------------------------------------------------------------------------- */
+
+	const [today, setToDay] = useState(moment().format("DD"));
 	const [currentMonth, setCurrentMonth] = useState(moment().format("MM"));
 	const [currentYear, setCurrentYear] = useState(moment().format("YYYY"));
-	const [minYear] = useState(parseInt(moment().format("YYYY")) - 80);
 	const [currentMonthDays, setCurrentMonthDays] = useState(
 		moment("02", "MM").daysInMonth()
 	);
-
 	const [months] = useState([
-		{ name: "January", value: "01" },
-		{ name: "February", value: "02" },
-		{ name: "March", value: "03" },
-		{ name: "April", value: "04" },
-		{ name: "May", value: "05" },
-		{ name: "June", value: "06" },
-		{ name: "July", value: "07" },
-		{ name: "August", value: "08" },
-		{ name: "September", value: "09" },
-		{ name: "October", value: "10" },
-		{ name: "November", value: "11" },
-		{ name: "December", value: "12" },
+		{ label: "January", value: "01" },
+		{ label: "February", value: "02" },
+		{ label: "March", value: "03" },
+		{ label: "April", value: "04" },
+		{ label: "May", value: "05" },
+		{ label: "June", value: "06" },
+		{ label: "July", value: "07" },
+		{ label: "August", value: "08" },
+		{ label: "September", value: "09" },
+		{ label: "October", value: "10" },
+		{ label: "November", value: "11" },
+		{ label: "December", value: "12" },
 	]);
+
+	const [daysOptions, setDaysOptions] = useState([]);
+	const [yearOptions, setYearOptions] = useState([]);
+
+	/* -------------------------------------------------------------------------- */
+	/*                               Use effect section                           */
+	/* -------------------------------------------------------------------------- */
+
+	useEffect(() => {
+		findDays(moment(moment().format("MM"), "MM").daysInMonth());
+		findYears(parseInt(moment().format("YYYY")) - 80, moment().format("YYYY"));
+	}, []);
+
+	/* -------------------------------------------------------------------------- */
+	/*                               Onchange section                             */
+	/* -------------------------------------------------------------------------- */
 
 	const handleChangeDay = (e) => {
 		setToDay(e.target.value);
@@ -33,11 +51,39 @@ function App() {
 	const handleChangeMonth = (e) => {
 		setCurrentMonth(e.target.value);
 		setCurrentMonthDays(moment(e.target.value, "MM").daysInMonth());
+		findDays(moment(e.target.value, "MM").daysInMonth());
 	};
 
 	const handleChangeYear = (e) => {
-		console.log(e.target.value);
 		setCurrentYear(e.target.value);
+	};
+
+	/* ------ function to find current month days ------ */
+
+	const findDays = (value) => {
+		let days = [];
+		let length = value + 1;
+		for (let i = 1; i < length; i++) {
+			let stringLength = i.toString().length;
+			days.push({
+				value: stringLength === 1 ? "0" + i.toString() : i.toString(),
+				label: stringLength === 1 ? "0" + i.toString() : i.toString(),
+			});
+		}
+		setDaysOptions(days);
+	};
+
+	/* ------ function to find years ------ */
+
+	const findYears = (minYear, maxYear) => {
+		let years = [];
+		for (let i = minYear; i < parseInt(maxYear) + 1; i++) {
+			years.push({
+				value: i,
+				label: i,
+			});
+		}
+		setYearOptions(years);
 	};
 
 	return (
@@ -54,9 +100,9 @@ function App() {
 								return (
 									<option
 										value={item.value}
-										selected={item.value == currentMonth}
+										selected={item.value === currentMonth}
 									>
-										{item.name}
+										{item.label}
 									</option>
 								);
 							})}
@@ -69,17 +115,14 @@ function App() {
 							onChange={(e) => handleChangeDay(e)}
 							className="form-select"
 						>
-							{Array.from({ length: currentMonthDays + 1 }, (v, k) => k).map(
-								(item, index) => {
-									console.log(item);
-									if (index !== 0)
-										return (
-											<option value={item} selected={item == today}>
-												{item}
-											</option>
-										);
-								}
-							)}
+							{daysOptions.map((item, index) => {
+								if (index !== 0)
+									return (
+										<option value={item.value} selected={item.value === today}>
+											{item.label}
+										</option>
+									);
+							})}
 						</select>{" "}
 					</div>
 					&nbsp;&nbsp;
@@ -89,21 +132,21 @@ function App() {
 							onChange={(e) => handleChangeYear(e)}
 							className="form-select"
 						>
-							{Array.from({ length: minYear + 81 }, (v, k) => k).map(
-								(item, index) => {
-									if (item > minYear)
-										return (
-											<option value={item} selected={item == currentYear}>
-												{item}
-											</option>
-										);
-								}
-							)}{" "}
+							{yearOptions.map((item, index) => {
+								return (
+									<option
+										value={item.value}
+										selected={item.value === parseInt(currentYear)}
+									>
+										{item.label}
+									</option>
+								);
+							})}{" "}
 						</select>
 					</div>
 				</div>
 				<div className="mt-5">
-					<p className="mt-3">MM-D-YYYY</p>
+					<p className="mt-3">MM-DD-YYYY</p>
 
 					<p className="mt-3">
 						{currentMonth + " - " + today + " - " + currentYear}
@@ -116,10 +159,13 @@ function App() {
 					</p>
 
 					<p className="mt-3">
+						{" "}
+						Asia/Kolkata (Time zone) -
 						{JSON.stringify(
-							moment
-								.utc(moment(currentMonth + "-" + today + "-" + currentYear))
-								.format()
+							moment.tz(
+								currentMonth + "-" + today + "-" + currentYear,
+								"Asia/Kolkata"
+							)
 						)}
 					</p>
 				</div>
@@ -129,3 +175,5 @@ function App() {
 }
 
 export default App;
+
+// https://stackoverflow.com/questions/35117787/momentjs-shows-evaluate-one-day-less#:~:text=When%20you%20give%20Moment%20an,on%20Jan%203rd%20in%20UTC.
