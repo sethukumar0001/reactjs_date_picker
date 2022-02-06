@@ -45,24 +45,11 @@ function App() {
 			<header className="App-header">
 				<div className="d-flex justify-content-between">
 					<div>
-						<label>Days - {currentMonthDays}</label>&nbsp;&nbsp;
-						<select onChange={(e) => handleChangeDay(e)}>
-							{Array.from({ length: currentMonthDays + 1 }, (v, k) => k).map(
-								(item, index) => {
-									if (index !== 0)
-										return (
-											<option value={item} selected={item == today}>
-												{item}
-											</option>
-										);
-								}
-							)}
-						</select>{" "}
-						&nbsp;&nbsp;
-					</div>
-					<div>
-						<label>Month - {currentMonth}</label>&nbsp;&nbsp;
-						<select onChange={(e) => handleChangeMonth(e)}>
+						<label>Month - {currentMonth}</label>
+						<select
+							onChange={(e) => handleChangeMonth(e)}
+							className="form-select"
+						>
 							{months.map((item) => {
 								return (
 									<option
@@ -73,12 +60,35 @@ function App() {
 									</option>
 								);
 							})}
-						</select>
-						&nbsp;&nbsp;
+						</select>{" "}
 					</div>
+					&nbsp;&nbsp;
 					<div>
-						<label>Years</label>&nbsp;&nbsp;
-						<select onChange={(e) => handleChangeYear(e)}>
+						<label>Days - {currentMonthDays}</label>
+						<select
+							onChange={(e) => handleChangeDay(e)}
+							className="form-select"
+						>
+							{Array.from({ length: currentMonthDays + 1 }, (v, k) => k).map(
+								(item, index) => {
+									console.log(item);
+									if (index !== 0)
+										return (
+											<option value={item} selected={item == today}>
+												{item}
+											</option>
+										);
+								}
+							)}
+						</select>{" "}
+					</div>
+					&nbsp;&nbsp;
+					<div>
+						<label>Years</label>
+						<select
+							onChange={(e) => handleChangeYear(e)}
+							className="form-select"
+						>
 							{Array.from({ length: minYear + 81 }, (v, k) => k).map(
 								(item, index) => {
 									if (item > minYear)
@@ -88,9 +98,8 @@ function App() {
 											</option>
 										);
 								}
-							)}
+							)}{" "}
 						</select>
-						&nbsp;&nbsp;
 					</div>
 				</div>
 				<div className="mt-5">
