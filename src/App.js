@@ -2,6 +2,7 @@ import "./App.css";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import "moment-timezone";
+import DatePicker from "./datepicker";
 function App() {
 	/* -------------------------------------------------------------------------- */
 	/*                               Use State section                            */
@@ -14,21 +15,6 @@ function App() {
 		moment("02", "MM").daysInMonth()
 	);
 	const [selectedType, setSelectedType] = useState("adult");
-	const [months] = useState([
-		{ label: "January", value: "01" },
-		{ label: "February", value: "02" },
-		{ label: "March", value: "03" },
-		{ label: "April", value: "04" },
-		{ label: "May", value: "05" },
-		{ label: "June", value: "06" },
-		{ label: "July", value: "07" },
-		{ label: "August", value: "08" },
-		{ label: "September", value: "09" },
-		{ label: "October", value: "10" },
-		{ label: "November", value: "11" },
-		{ label: "December", value: "12" },
-	]);
-
 	const [daysOptions, setDaysOptions] = useState([]);
 	const [yearOptions, setYearOptions] = useState([]);
 	const [expiryYearOption, setExpiryYearOption] = useState([]);
@@ -39,7 +25,7 @@ function App() {
 
 	useEffect(() => {
 		findDays(moment(moment().format("MM"), "MM").daysInMonth());
-		findYears(parseInt(moment().format("YYYY")) - 80, moment().format("YYYY"));
+		findYears(parseInt(moment().format("YYYY")) - 100, moment().format("YYYY"));
 		findExpiryYear(
 			moment().format("YYYY"),
 			parseInt(moment().format("YYYY")) + 20
@@ -68,7 +54,7 @@ function App() {
 		setSelectedType(e);
 		if (e === "adult") {
 			findYears(
-				parseInt(moment().format("YYYY")) - 80,
+				parseInt(moment().format("YYYY")) - 100,
 				moment().format("YYYY")
 			);
 		} else if (e === "child") {
@@ -80,6 +66,10 @@ function App() {
 			findYears(parseInt(moment().format("YYYY")) - 2, moment().format("YYYY"));
 		}
 	};
+
+	/* -------------------------------------------------------------------------- */
+	/*                           Helper function section                          */
+	/* -------------------------------------------------------------------------- */
 
 	/* ------ function to find current month days ------ */
 
@@ -108,6 +98,7 @@ function App() {
 		}
 		setYearOptions(years);
 	};
+	/* ------ function to find expiry years ------ */
 
 	const findExpiryYear = (minYear, maxYear) => {
 		let years = [];
@@ -121,195 +112,22 @@ function App() {
 	};
 
 	return (
-		<div className="App">
-			<header className="App-header">
-				<div className="d-flex justify-content-between">
-					<div class="form-check mb-3">
-						<input
-							class="form-check-input"
-							type="radio"
-							name="flexRadioDefault"
-							id="flexRadioDefault1"
-							checked={selectedType === "adult"}
-							onChange={() => handleChangeType("adult")}
-						/>
-						<label class="form-check-label" for="flexRadioDefault1">
-							Adult
-						</label>
-					</div>
-					&nbsp;&nbsp;
-					<div class="form-check">
-						<input
-							class="form-check-input"
-							type="radio"
-							name="flexRadioDefault"
-							id="flexRadioDefault1"
-							checked={selectedType === "child"}
-							onChange={() => handleChangeType("child")}
-						/>
-						<label class="form-check-label" for="flexRadioDefault1">
-							Child
-						</label>
-					</div>
-					&nbsp;&nbsp;&nbsp;&nbsp;
-					<div class="form-check">
-						<input
-							class="form-check-input"
-							type="radio"
-							name="flexRadioDefault"
-							id="flexRadioDefault1"
-							checked={selectedType === "infant"}
-							onChange={() => handleChangeType("infant")}
-						/>
-						<label class="form-check-label" for="flexRadioDefault1">
-							Infant
-						</label>
-					</div>
-					&nbsp;&nbsp;&nbsp;&nbsp;
-				</div>
-				<h2 className="color">Date of Birth</h2>
-				<div className="d-flex justify-content-between">
-					<div>
-						<label>Month - {currentMonth}</label>
-						<select
-							onChange={(e) => handleChangeMonth(e)}
-							className="form-select"
-						>
-							{months.map((item) => {
-								return (
-									<option
-										value={item.value}
-										selected={item.value === currentMonth}
-									>
-										{item.label}
-									</option>
-								);
-							})}
-						</select>{" "}
-					</div>
-					&nbsp;&nbsp;
-					<div>
-						<label>Days - {currentMonthDays}</label>
-						<select
-							onChange={(e) => handleChangeDay(e)}
-							className="form-select"
-						>
-							{daysOptions.map((item, index) => {
-								return (
-									<option value={item.value} selected={item.value === today}>
-										{item.label}
-									</option>
-								);
-							})}
-						</select>{" "}
-					</div>
-					&nbsp;&nbsp;
-					<div>
-						<label>Years</label>
-						<select
-							onChange={(e) => handleChangeYear(e)}
-							className="form-select"
-						>
-							{yearOptions.map((item, index) => {
-								return (
-									<option
-										value={item.value}
-										selected={item.value === parseInt(currentYear)}
-									>
-										{item.label}
-									</option>
-								);
-							})}{" "}
-						</select>
-					</div>
-				</div>
-
-				<h2 className="color mt-5">Passport Expiry Date</h2>
-				<div className="d-flex justify-content-between">
-					<div>
-						<label>Month - {currentMonth}</label>
-						<select
-							onChange={(e) => handleChangeMonth(e)}
-							className="form-select"
-						>
-							{months.map((item) => {
-								return (
-									<option
-										value={item.value}
-										selected={item.value === currentMonth}
-									>
-										{item.label}
-									</option>
-								);
-							})}
-						</select>{" "}
-					</div>
-					&nbsp;&nbsp;
-					<div>
-						<label>Days - {currentMonthDays}</label>
-						<select
-							onChange={(e) => handleChangeDay(e)}
-							className="form-select"
-						>
-							{daysOptions.map((item, index) => {
-								return (
-									<option value={item.value} selected={item.value === today}>
-										{item.label}
-									</option>
-								);
-							})}
-						</select>{" "}
-					</div>
-					&nbsp;&nbsp;
-					<div>
-						<label>Years</label>
-						<select
-							onChange={(e) => handleChangeYear(e)}
-							className="form-select"
-						>
-							{expiryYearOption.map((item, index) => {
-								return (
-									<option
-										value={item.value}
-										selected={item.value === parseInt(currentYear)}
-									>
-										{item.label}
-									</option>
-								);
-							})}{" "}
-						</select>
-					</div>
-				</div>
-
-				<div className="mt-5">
-					<p className="mt-3">MM-DD-YYYY</p>
-
-					<p className="mt-3">
-						{currentMonth + " - " + today + " - " + currentYear}
-					</p>
-
-					<p className="mt-3">
-						{moment(
-							new Date(currentMonth + "-" + today + "-" + currentYear)
-						).format("MMM DD YYYY")}
-					</p>
-
-					<p className="mt-3">
-						{" "}
-						Asia/Kolkata (Time zone) -
-						{JSON.stringify(
-							moment.tz(
-								currentMonth + "-" + today + "-" + currentYear,
-								"Asia/Kolkata"
-							)
-						)}
-					</p>
-				</div>
-			</header>
-		</div>
+		<DatePicker
+			// state
+			today={today}
+			currentMonth={currentMonth}
+			currentYear={currentYear}
+			currentMonthDays={currentMonthDays}
+			selectedType={selectedType}
+			daysOptions={daysOptions}
+			yearOptions={yearOptions}
+			expiryYearOption={expiryYearOption}
+			// onchange
+			handleChangeDay={handleChangeDay}
+			handleChangeMonth={handleChangeMonth}
+			handleChangeYear={handleChangeYear}
+			handleChangeType={handleChangeType}
+		/>
 	);
 }
-
 export default App;
-
-// https://stackoverflow.com/questions/35117787/momentjs-shows-evaluate-one-day-less#:~:text=When%20you%20give%20Moment%20an,on%20Jan%203rd%20in%20UTC.

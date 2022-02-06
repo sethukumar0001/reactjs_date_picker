@@ -26,6 +26,9 @@
 .color{
   color:black
 }
+.label{
+  font-size: 16px;
+}
 .App-link {
   color: #61dafb;
 }
