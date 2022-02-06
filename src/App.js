@@ -13,6 +13,7 @@ function App() {
 	const [currentMonthDays, setCurrentMonthDays] = useState(
 		moment("02", "MM").daysInMonth()
 	);
+	const [selectedType, setSelectedType] = useState("adult");
 	const [months] = useState([
 		{ label: "January", value: "01" },
 		{ label: "February", value: "02" },
@@ -58,6 +59,23 @@ function App() {
 		setCurrentYear(e.target.value);
 	};
 
+	const handleChangeType = (e) => {
+		setSelectedType(e);
+		if (e === "adult") {
+			findYears(
+				parseInt(moment().format("YYYY")) - 80,
+				moment().format("YYYY")
+			);
+		} else if (e === "child") {
+			findYears(
+				parseInt(moment().format("YYYY")) - 12,
+				moment().format("YYYY")
+			);
+		} else {
+			findYears(parseInt(moment().format("YYYY")) - 2, moment().format("YYYY"));
+		}
+	};
+
 	/* ------ function to find current month days ------ */
 
 	const findDays = (value) => {
@@ -89,6 +107,50 @@ function App() {
 	return (
 		<div className="App">
 			<header className="App-header">
+				<div className="d-flex justify-content-between">
+					<div class="form-check mb-3">
+						<input
+							class="form-check-input"
+							type="radio"
+							name="flexRadioDefault"
+							id="flexRadioDefault1"
+							checked={selectedType === "adult"}
+							onChange={() => handleChangeType("adult")}
+						/>
+						<label class="form-check-label" for="flexRadioDefault1">
+							Adult
+						</label>
+					</div>
+					&nbsp;&nbsp;
+					<div class="form-check">
+						<input
+							class="form-check-input"
+							type="radio"
+							name="flexRadioDefault"
+							id="flexRadioDefault1"
+							checked={selectedType === "child"}
+							onChange={() => handleChangeType("child")}
+						/>
+						<label class="form-check-label" for="flexRadioDefault1">
+							Child
+						</label>
+					</div>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<div class="form-check">
+						<input
+							class="form-check-input"
+							type="radio"
+							name="flexRadioDefault"
+							id="flexRadioDefault1"
+							checked={selectedType === "infant"}
+							onChange={() => handleChangeType("infant")}
+						/>
+						<label class="form-check-label" for="flexRadioDefault1">
+							Infant
+						</label>
+					</div>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+				</div>
 				<div className="d-flex justify-content-between">
 					<div>
 						<label>Month - {currentMonth}</label>
