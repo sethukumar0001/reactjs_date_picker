@@ -4,7 +4,7 @@ import moment from "moment";
 
 function App() {
 	const [today, setToDay] = useState(moment().format("D"));
-	const [currentMonth, setCurrentMonth] = useState(moment().format("M"));
+	const [currentMonth, setCurrentMonth] = useState(moment().format("MM"));
 	const [currentYear, setCurrentYear] = useState(moment().format("YYYY"));
 	const [minYear] = useState(parseInt(moment().format("YYYY")) - 80);
 	const [currentMonthDays, setCurrentMonthDays] = useState(
@@ -12,15 +12,15 @@ function App() {
 	);
 
 	const [months] = useState([
-		{ name: "January", value: "1" },
-		{ name: "February", value: "2" },
-		{ name: "March", value: "3" },
-		{ name: "April", value: "4" },
-		{ name: "May", value: "5" },
-		{ name: "June", value: "6" },
-		{ name: "July", value: "7" },
-		{ name: "August", value: "8" },
-		{ name: "September", value: "9" },
+		{ name: "January", value: "01" },
+		{ name: "February", value: "02" },
+		{ name: "March", value: "03" },
+		{ name: "April", value: "04" },
+		{ name: "May", value: "05" },
+		{ name: "June", value: "06" },
+		{ name: "July", value: "07" },
+		{ name: "August", value: "08" },
+		{ name: "September", value: "09" },
 		{ name: "October", value: "10" },
 		{ name: "November", value: "11" },
 		{ name: "December", value: "12" },
@@ -45,72 +45,75 @@ function App() {
 			<header className="App-header">
 				<div className="d-flex justify-content-between">
 					<div>
-					<label>Days - {currentMonthDays}</label>&nbsp;&nbsp;
-					<select onChange={(e) => handleChangeDay(e)}>
-						{Array.from({ length: currentMonthDays + 1 }, (v, k) => k).map(
-							(item, index) => {
-								if (index !== 0)
-									return (
-										<option value={item} selected={item == today}>
-											{item}
-										</option>
-									);
-							}
-						)}
-					</select> &nbsp;&nbsp;
+						<label>Days - {currentMonthDays}</label>&nbsp;&nbsp;
+						<select onChange={(e) => handleChangeDay(e)}>
+							{Array.from({ length: currentMonthDays + 1 }, (v, k) => k).map(
+								(item, index) => {
+									if (index !== 0)
+										return (
+											<option value={item} selected={item == today}>
+												{item}
+											</option>
+										);
+								}
+							)}
+						</select>{" "}
+						&nbsp;&nbsp;
 					</div>
 					<div>
-					<label>Month - {currentMonth}</label>&nbsp;&nbsp;
-					<select onChange={(e) => handleChangeMonth(e)}>
-						{months.map((item) => {
-							return (
-								<option
-									value={item.value}
-									selected={item.value == currentMonth}
-								>
-									{item.name}
-								</option>
-							);
-						})}
-					</select>&nbsp;&nbsp;
+						<label>Month - {currentMonth}</label>&nbsp;&nbsp;
+						<select onChange={(e) => handleChangeMonth(e)}>
+							{months.map((item) => {
+								return (
+									<option
+										value={item.value}
+										selected={item.value == currentMonth}
+									>
+										{item.name}
+									</option>
+								);
+							})}
+						</select>
+						&nbsp;&nbsp;
 					</div>
 					<div>
-					<label>Years</label>&nbsp;&nbsp;
-					<select onChange={(e) => handleChangeYear(e)}>
-						{Array.from({ length: minYear + 81 }, (v, k) => k).map(
-							(item, index) => {
-								if (item > minYear)
-									return (
-										<option value={item} selected={item == currentYear}>
-											{item}
-										</option>
-									);
-							}
-						)}
-					</select>&nbsp;&nbsp;
+						<label>Years</label>&nbsp;&nbsp;
+						<select onChange={(e) => handleChangeYear(e)}>
+							{Array.from({ length: minYear + 81 }, (v, k) => k).map(
+								(item, index) => {
+									if (item > minYear)
+										return (
+											<option value={item} selected={item == currentYear}>
+												{item}
+											</option>
+										);
+								}
+							)}
+						</select>
+						&nbsp;&nbsp;
 					</div>
 				</div>
-				<div>
-					<br />
-					<br />
-					M-D-YYYY
-					<br />
-					<br />
-					{currentMonth + " - " + today + " - " + currentYear}
-					<br />
-					<br />
-					{moment(
-						new Date(currentMonth + "-" + today + "-" + currentYear)
-					).format("MMM DD YYYY")}
-					<br />
-					<br />
-					{JSON.stringify(
-						moment
-							.utc(moment(currentMonth + "-" + today + "-" + currentYear))
-							.format()
-					)}
-					</div>
-				
+				<div className="mt-5">
+					<p className="mt-3">MM-D-YYYY</p>
+
+					<p className="mt-3">
+						{currentMonth + " - " + today + " - " + currentYear}
+					</p>
+
+					<p className="mt-3">
+						{moment(
+							new Date(currentMonth + "-" + today + "-" + currentYear)
+						).format("MMM DD YYYY")}
+					</p>
+
+					<p className="mt-3">
+						{JSON.stringify(
+							moment
+								.utc(moment(currentMonth + "-" + today + "-" + currentYear))
+								.format()
+						)}
+					</p>
+				</div>
 			</header>
 		</div>
 	);
